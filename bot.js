@@ -9,12 +9,21 @@ var params = {
   count: 2
 }
 
-setInterval(tweetIt, 1000*20)
+var stream = T.stream('user');
+stream.on('follow', followed);
 
-function tweetIt() {
+function followed(eventMsg) {
+  var name = eventMsg.source.name;
+  var screenName = eventMsg.source.screen_name;
+  tweetIt('@' + screenName);
+}
+
+//setInterval(tweetIt, 1000*20)
+
+function tweetIt(message) {
   var r = Math.floor(Math.random()*100);
   var tweet = {
-    status: 'beep boop, Bot reporting..here is a random number ' + r + ' from node.js :)'
+    status: 'beep boop, alert!.. ' + message + ' followed me!'
   }
 
   T.post('statuses/update', tweet, tweeted);
