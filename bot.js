@@ -36,7 +36,7 @@ function tweetIt(message) {
     status: message
   }
 
-  T.post('statuses/update', tweet, tweeted);
+  T.post('statuses/update', tweetEvent, tweeted);
 
   function tweeted(err, data, response) {
     if (err) {
