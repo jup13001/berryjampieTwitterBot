@@ -10,20 +10,30 @@ var params = {
 }
 
 var stream = T.stream('user');
-stream.on('follow', followed);
+stream.on('tweet', tweetEvent);
 
-function followed(eventMsg) {
-  var name = eventMsg.source.name;
-  var screenName = eventMsg.source.screen_name;
-  tweetIt('@' + screenName);
+function tweetEvent(eventMsg) {
+  // var fs = require('fs');
+  // var json = JSON.stringify(eventMsg, null, 2);
+  // fs.writeFile("tweet.json", json);
+
+  var replyTo = eventMsg.in_reply_to_screen_name;
+  var message = eventMsg.text;
+  var from = eventMsg.user.screen_name;
+
+  console.log(replyTo + ' ' + from);
+
+  if (replyTo == 'berryjampie') {
+    var newTweet = '@' + from + " boop beep, I am a bot. Talk to Julie instead."
+    tweetIt(newTweet);
+  }
 }
 
 //setInterval(tweetIt, 1000*20)
 
 function tweetIt(message) {
-  var r = Math.floor(Math.random()*100);
   var tweet = {
-    status: 'beep boop, alert!.. ' + message + ' followed me!'
+    status: message
   }
 
   T.post('statuses/update', tweet, tweeted);
